@@ -375,8 +375,9 @@ proc argHelp*[T](dfl: set[T], a: var ArgcvtParams): seq[string]=
   result = @[ a.argKeys, typ, a.argDf(df) ]
 
 # HashSets
-when NimVersion <= "0.19.4":
-  proc toHashSet[A](keys: openArray[A]): HashSet[A] = toSet[A](keys)
+when (NimMajor, NimMinor, NimPatch) < (0, 20, 0):
+  when not declared(toHashSet):
+    proc toHashSet[A](keys: openArray[A]): HashSet[A] = toSet[A](keys)
 
 proc argParse*[T](dst: var HashSet[T], dfl: HashSet[T],
                   a: var ArgcvtParams): bool =
